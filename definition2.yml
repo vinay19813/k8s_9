@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    author: Devops
+    app: Db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Db
+  template:
+    metadata:
+      labels:
+        app: Db
+    spec:
+      containers:
+        - name: mydb
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: Devops
+
+
+...
