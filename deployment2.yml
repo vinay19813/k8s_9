@@ -2,28 +2,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql-deployment
+  name: postgres-deployment
   labels:
-    author: Devops
-    app: Db
+    app: db
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: Db
+      app: db
   template:
     metadata:
+      name: postgres-pod
       labels:
-        app: Db
+        app: db
     spec:
-      containers:
-        - name: mydb
-          image: mysql
-          ports:
-            - containerPort: 3306
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: Devops
+     containers:
+       - name: mydb
+         image: postgres
+         env:
+           - name: POSTGRES_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: postgres-secret
+                 key: password
+           - name: POSTGRES_USER
+             valueFrom:
+               secretKeyRef:
+                 name: postgres-secret
+                 key: username
+           - name: POSTGRES_DB
+             valueFrom:
+               secretKeyRef:
+                 name: postgres-secret
+                 key: dbname
+... 
 
 
-...
+
+
+
